@@ -67,7 +67,7 @@ async Task CreateRolesAsync(IServiceProvider serviceProvider)
 {
     var roleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
 
-    string[] roleNames = { "Admin", "Doctor", "Patient" };
+    string[] roleNames = { "Admin", "Doctor", "Patient" }; // Add any other roles you need
 
     IdentityResult roleResult;
 
@@ -77,7 +77,7 @@ async Task CreateRolesAsync(IServiceProvider serviceProvider)
 
         if (!roleExist)
         {
-=            roleResult = await roleManager.CreateAsync(new IdentityRole(roleName));
+            roleResult = await roleManager.CreateAsync(new IdentityRole(roleName));
         }
     }
 }
