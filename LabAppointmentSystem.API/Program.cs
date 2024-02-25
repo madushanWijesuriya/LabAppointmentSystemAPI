@@ -1,5 +1,8 @@
 using LabAppointmentSystem.API.Data;
+using LabAppointmentSystem.API.Middlewares;
 using LabAppointmentSystem.API.Models;
+using LabAppointmentSystem.API.Repositories;
+using LabAppointmentSystem.API.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -10,14 +13,25 @@ builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
 
-builder.Services.AddIdentity<IdentityUser, IdentityRole>()
+builder.Services.AddScoped<UserManager<User>>();
+
+builder.Services.AddScoped<IDoctorRepository, DoctorRepository>();
+builder.Services.AddScoped<IDoctorService, DoctorService>();
+builder.Services.AddScoped<IJwtTokenService, JwtTokenService>();
+
+builder.Services.AddIdentity<User, IdentityRole>()
     .AddEntityFrameworkStores<AppDbContext>()
     .AddDefaultTokenProviders();
 
-// Add services to the container.
+// Create roles before building the app
+await CreateRolesAsync(builder.Services.BuildServiceProvider());
+
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("AllowAnonymousPolicy", policy => policy.RequireAssertion(context => true));
+});
 
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
@@ -32,8 +46,38 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+app.UseMiddleware<JwtMiddleware>();
+
 app.UseAuthorization();
 
 app.MapControllers();
 
 app.Run();
+
+
+
+
+
+
+
+
+
+
+async Task CreateRolesAsync(IServiceProvider serviceProvider)
+{
+    var roleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+
+    string[] roleNames = { "Admin", "Doctor", "Patient" };
+
+    IdentityResult roleResult;
+
+    foreach (var roleName in roleNames)
+    {
+        var roleExist = await roleManager.RoleExistsAsync(roleName);
+
+        if (!roleExist)
+        {
+=            roleResult = await roleManager.CreateAsync(new IdentityRole(roleName));
+        }
+    }
+}

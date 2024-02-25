@@ -1,6 +1,7 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using LabAppointmentSystem.API.Models;
+using System.ComponentModel.DataAnnotations.Schema;
 
-namespace LabAppointmentSystem.API.Models
+namespace labappointmentsystem.api.models
 {
     [Table("Technicians")]
 

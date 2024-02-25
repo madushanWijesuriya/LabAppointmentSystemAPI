@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LabAppointmentSystem.API.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20240225085810_UserTablesCreate")]
-    partial class UserTablesCreate
+    [Migration("20240225173334_initialTables")]
+    partial class initialTables
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -34,7 +34,6 @@ namespace LabAppointmentSystem.API.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Address")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ConcurrencyStamp")
@@ -45,7 +44,6 @@ namespace LabAppointmentSystem.API.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Email")
-                        .IsRequired()
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
 
@@ -62,11 +60,9 @@ namespace LabAppointmentSystem.API.Migrations
                         .HasColumnType("datetimeoffset");
 
                     b.Property<string>("NIC")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Name")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("NormalizedEmail")
@@ -88,9 +84,6 @@ namespace LabAppointmentSystem.API.Migrations
 
                     b.Property<string>("SecurityStamp")
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("Tel")
-                        .HasColumnType("int");
 
                     b.Property<bool>("TwoFactorEnabled")
                         .HasColumnType("bit");
@@ -278,7 +271,7 @@ namespace LabAppointmentSystem.API.Migrations
                     b.ToTable("Receptions");
                 });
 
-            modelBuilder.Entity("LabAppointmentSystem.API.Models.Technician", b =>
+            modelBuilder.Entity("labappointmentsystem.api.models.Technician", b =>
                 {
                     b.HasBaseType("LabAppointmentSystem.API.Models.User");
 
@@ -363,11 +356,11 @@ namespace LabAppointmentSystem.API.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("LabAppointmentSystem.API.Models.Technician", b =>
+            modelBuilder.Entity("labappointmentsystem.api.models.Technician", b =>
                 {
                     b.HasOne("LabAppointmentSystem.API.Models.User", null)
                         .WithOne()
-                        .HasForeignKey("LabAppointmentSystem.API.Models.Technician", "Id")
+                        .HasForeignKey("labappointmentsystem.api.models.Technician", "Id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
