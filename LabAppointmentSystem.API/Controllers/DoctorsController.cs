@@ -30,6 +30,7 @@ namespace LabAppointmentSystem.API.Controllers
         }
 
         [HttpPost]
+        [AllowAnonymous]
         public async Task<IActionResult> create(Doctor doctor)
         {
             var result = await _userManageService.CreateAsync(doctor, doctor.Password);

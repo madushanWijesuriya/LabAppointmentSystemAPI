@@ -1,5 +1,6 @@
 ﻿using LabAppointmentSystem.API.Models;
 using LabAppointmentSystem.API.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -17,15 +18,18 @@ namespace LabAppointmentSystem.API.Controllers
         private readonly UserManager<User> _userManager;
         private readonly SignInManager<User> _signInManager;
         private readonly IJwtTokenService _jwtTokenService;
+        private readonly IConfiguration _config;
 
-        public AuthController(UserManager<User> userManager, SignInManager<User> signInManager, IJwtTokenService jwtTokenService)
+        public AuthController(UserManager<User> userManager, SignInManager<User> signInManager, IJwtTokenService jwtTokenService, IConfiguration config)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _jwtTokenService = jwtTokenService;
+            _config = config;
         }
 
         [HttpPost("Login")]
+        [AllowAnonymous]
         public async Task<IActionResult> Login(User model)
         {
             if (!ModelState.IsValid)

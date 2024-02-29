@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using LabAppointmentSystem.API.Enums;
+using Microsoft.AspNetCore.Identity;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace LabAppointmentSystem.API.Models
@@ -8,7 +9,7 @@ namespace LabAppointmentSystem.API.Models
         public string? NIC { get; set; }
         public string? Name { get; set; }
         public string? Address { get; set; }
-        public bool Gender { get; set; }
+        public string Gender { get; set; }
         [NotMapped]
         public string Password { get; set; }
         public DateTime CreatedAt { get; set; }

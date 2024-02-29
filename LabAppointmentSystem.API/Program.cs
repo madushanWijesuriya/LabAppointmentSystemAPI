@@ -1,10 +1,13 @@
 using LabAppointmentSystem.API.Data;
-using LabAppointmentSystem.API.Middlewares;
+using LabAppointmentSystem.API.Mappers;
 using LabAppointmentSystem.API.Models;
 using LabAppointmentSystem.API.Repositories;
 using LabAppointmentSystem.API.Services;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -23,19 +26,42 @@ builder.Services.AddIdentity<User, IdentityRole>()
     .AddEntityFrameworkStores<AppDbContext>()
     .AddDefaultTokenProviders();
 
-// Create roles before building the app
-await CreateRolesAsync(builder.Services.BuildServiceProvider());
 
-builder.Services.AddAuthorization(options =>
+builder.Services.AddAuthentication(options =>
 {
-    options.AddPolicy("AllowAnonymousPolicy", policy => policy.RequireAssertion(context => true));
+    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+}).AddJwtBearer(options =>
+{
+    options.TokenValidationParameters = new TokenValidationParameters
+    {
+        ValidateIssuer = true,
+        ValidateAudience = true,
+        ValidateLifetime = true,
+        ValidateIssuerSigningKey = true,
+        ValidIssuer = "MadushanWijesuriya",
+        ValidAudience = "MadushanWijesuriya",
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("ICBT-ADVANCE-PROGRAMMING"))
+    };
 });
+
+builder.Services.AddAutoMapper(typeof(DoctorMapper));
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
+
+using (var scope = app.Services.CreateScope())
+{
+    var serviceProvider = scope.ServiceProvider;
+    var dbContext = serviceProvider.GetRequiredService<AppDbContext>();
+
+    dbContext.Database.EnsureCreated(); // or dbContext.Database.Migrate()
+
+    await CreateRolesAsync(serviceProvider);
+}
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -46,8 +72,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-app.UseMiddleware<JwtMiddleware>();
-
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();

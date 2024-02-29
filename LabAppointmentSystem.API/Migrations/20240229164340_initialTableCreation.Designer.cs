@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LabAppointmentSystem.API.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20240225173334_initialTables")]
-    partial class initialTables
+    [Migration("20240229164340_initialTableCreation")]
+    partial class initialTableCreation
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -50,8 +50,9 @@ namespace LabAppointmentSystem.API.Migrations
                     b.Property<bool>("EmailConfirmed")
                         .HasColumnType("bit");
 
-                    b.Property<bool>("Gender")
-                        .HasColumnType("bit");
+                    b.Property<string>("Gender")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("LockoutEnabled")
                         .HasColumnType("bit");
