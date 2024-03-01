@@ -41,12 +41,40 @@ namespace LabAppointmentSystem.API.Controllers
 
             if (user != null && await _userManager.CheckPasswordAsync(user, model.Password))
             {
-                var token = _jwtTokenService.GenerateJwtToken(user);
+                var roles = await _userManager.GetRolesAsync(user);
+
+                var token = _jwtTokenService.GenerateJwtToken(user, roles);
                 return Ok(new { Token = token });
             }
 
             ModelState.AddModelError("error", "Invalid login attempt.");
             return Unauthorized(ModelState);
         }
+
+        [HttpPost("Register")]
+        [AllowAnonymous]
+        public async Task<IActionResult> Register(User user)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var result = await _userManager.CreateAsync(user, user.Password);
+
+            if (result.Succeeded)
+            {
+                var token = _jwtTokenService.GenerateJwtToken(user);
+                return Ok(new { Token = token });
+            }
+
+            foreach (var error in result.Errors)
+            {
+                ModelState.AddModelError(string.Empty, error.Description);
+            }
+
+            return BadRequest(ModelState);
+        }
+
     }
 }

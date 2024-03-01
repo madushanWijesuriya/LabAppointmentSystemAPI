@@ -41,15 +41,37 @@ builder.Services.AddAuthentication(options =>
         ValidateIssuerSigningKey = true,
         ValidIssuer = "MadushanWijesuriya",
         ValidAudience = "MadushanWijesuriya",
-        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("ICBT-ADVANCE-PROGRAMMING"))
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPp"))
     };
 });
-
-builder.Services.AddAutoMapper(typeof(DoctorMapper));
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("RequireAdminRole", policy =>
+    {
+        policy.RequireRole("Admin");
+    });
+    options.AddPolicy("RequireDoctorRole", policy =>
+    {
+        policy.RequireRole("Doctor");
+    });
+    options.AddPolicy("RequirePatientRole", policy =>
+    {
+        policy.RequireRole("Patient");
+    });
+    options.AddPolicy("RequireTechRole", policy =>
+    {
+        policy.RequireRole("Tech");
+    });
+    options.AddPolicy("RequireReceptionRole", policy =>
+    {
+        policy.RequireRole("Reception");
+    });
+});
 
 var app = builder.Build();
 
@@ -58,9 +80,14 @@ using (var scope = app.Services.CreateScope())
     var serviceProvider = scope.ServiceProvider;
     var dbContext = serviceProvider.GetRequiredService<AppDbContext>();
 
-    dbContext.Database.EnsureCreated(); // or dbContext.Database.Migrate()
+    dbContext.Database.EnsureCreated();
 
     await CreateRolesAsync(serviceProvider);
+
+    var userManager = serviceProvider.GetRequiredService<UserManager<User>>();
+    var roleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+    await IdentityInitializer.InitializeAsync(userManager, roleManager);
+
 }
 
 // Configure the HTTP request pipeline.
@@ -92,7 +119,7 @@ async Task CreateRolesAsync(IServiceProvider serviceProvider)
 {
     var roleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
 
-    string[] roleNames = { "Admin", "Doctor", "Patient" };
+    string[] roleNames = { "Admin", "Doctor", "Patient", "Tech", "Reception" };
 
     IdentityResult roleResult;
 

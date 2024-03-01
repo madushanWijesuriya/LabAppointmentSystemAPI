@@ -9,7 +9,7 @@ namespace LabAppointmentSystem.API.Models
         public string? NIC { get; set; }
         public string? Name { get; set; }
         public string? Address { get; set; }
-        public string Gender { get; set; }
+        public string? Gender { get; set; }
         [NotMapped]
         public string Password { get; set; }
         public DateTime CreatedAt { get; set; }

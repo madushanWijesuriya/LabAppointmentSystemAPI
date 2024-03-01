@@ -22,7 +22,7 @@ namespace LabAppointmentSystem.API.Controllers
         }
 
         [HttpGet]
-        [Authorize(Policy = "AllowAnonymousPolicy")]
+        [Authorize(Roles = "Doctor")]
         public ActionResult<IQueryable<Doctor>> GetAllDoctors()
         {
             var doctors = _doctorService.GetAllDoctors();
@@ -30,7 +30,7 @@ namespace LabAppointmentSystem.API.Controllers
         }
 
         [HttpPost]
-        [AllowAnonymous]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> create(Doctor doctor)
         {
             var result = await _userManageService.CreateAsync(doctor, doctor.Password);
