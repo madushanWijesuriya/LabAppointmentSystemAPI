@@ -1,7 +1,7 @@
 ﻿using LabAppointmentSystem.API.Models;
 using Microsoft.AspNetCore.Identity;
 
-namespace LabAppointmentSystem.API.Services
+namespace LabAppointmentSystem.API.Services.Classes
 {
     public static class IdentityInitializer
     {

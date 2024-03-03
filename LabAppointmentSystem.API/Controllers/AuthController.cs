@@ -1,5 +1,5 @@
 ﻿using LabAppointmentSystem.API.Models;
-using LabAppointmentSystem.API.Services;
+using LabAppointmentSystem.API.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;

@@ -2,8 +2,9 @@
 using LabAppointmentSystem.API.Mappers;
 using LabAppointmentSystem.API.Models;
 using LabAppointmentSystem.API.Repositories;
+using LabAppointmentSystem.API.Services.Interfaces;
 
-namespace LabAppointmentSystem.API.Services
+namespace LabAppointmentSystem.API.Services.Classes
 {
     public class DoctorService : IDoctorService
     {

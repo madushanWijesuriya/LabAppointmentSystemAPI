@@ -1,10 +1,11 @@
 ﻿using LabAppointmentSystem.API.Models;
+using LabAppointmentSystem.API.Services.Interfaces;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 
-namespace LabAppointmentSystem.API.Services
+namespace LabAppointmentSystem.API.Services.Classes
 {
     public class JwtTokenService : IJwtTokenService
     {
@@ -23,14 +24,14 @@ namespace LabAppointmentSystem.API.Services
                 new Claim(ClaimTypes.Name, user.UserName),
             };
 
-            if(roles.Count() > 0)
+            if (roles.Count() > 0)
             {
                 foreach (var role in roles)
                 {
                     claims.Add(new Claim(ClaimTypes.Role, role));
                 }
             }
-            
+
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]));
             var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 

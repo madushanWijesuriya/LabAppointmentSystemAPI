@@ -11,30 +11,30 @@ namespace LabAppointmentSystem.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class DoctorsController : ControllerBase
+    public class ReceptionsController : ControllerBase
     {
-        private readonly IDoctorService _doctorService;
+        private readonly IReceptionService _ReceptionService;
         private readonly IExceptionHandlingService _exceptionHandlingService;
         private readonly UserManager<User> _userManageService;
 
-        public DoctorsController(
-            IDoctorService doctorService, 
+        public ReceptionsController(
+            IReceptionService ReceptionService, 
             UserManager<User> userManageService, 
             IExceptionHandlingService exceptionHandlingService)
         {
-            _doctorService = doctorService;
+            _ReceptionService = ReceptionService;
             _userManageService = userManageService;
             _exceptionHandlingService = exceptionHandlingService;
         }
 
         [HttpGet]
-        [Authorize(Roles = "Doctor")]
-        public ActionResult<IQueryable<Doctor>> GetAllDoctors()
+        [Authorize(Roles = "Admin")]
+        public ActionResult<IQueryable<Reception>> GetAllReceptions()
         {
             try
             {
-                var doctors = _doctorService.GetAllDoctors();
-                return Ok(doctors);
+                var Receptions = _ReceptionService.GetAllReceptions();
+                return Ok(Receptions);
             }
             catch (Exception ex)
             {
@@ -44,15 +44,15 @@ namespace LabAppointmentSystem.API.Controllers
 
         [HttpPost]
         [Authorize(Roles = "Admin")]
-        public async Task<IActionResult> create(Doctor doctor)
+        public async Task<IActionResult> create(Reception Reception)
         {
             try
             {
-                var result = await _userManageService.CreateAsync(doctor, doctor.Password);
+                var result = await _userManageService.CreateAsync(Reception, Reception.Password);
 
                 if (result.Succeeded)
                 {
-                    await _userManageService.AddToRoleAsync(doctor, "Doctor");
+                    await _userManageService.AddToRoleAsync(Reception, "Reception");
                     return Ok();
                 }
                 return BadRequest();

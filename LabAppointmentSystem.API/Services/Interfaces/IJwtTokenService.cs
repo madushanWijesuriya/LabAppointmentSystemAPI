@@ -1,6 +1,6 @@
 ﻿using LabAppointmentSystem.API.Models;
 
-namespace LabAppointmentSystem.API.Services
+namespace LabAppointmentSystem.API.Services.Interfaces
 {
     public interface IJwtTokenService
     {
