@@ -13,6 +13,8 @@ namespace LabAppointmentSystem.API.Data
         public DbSet<Doctor> Doctors { get; set; }
         public DbSet<Patient> Patients { get; set; }
         partial void OnModelCreatingAppointment(ModelBuilder modelBuilder);
+        partial void OnModelCreatingTest(ModelBuilder modelBuilder);
+        partial void OnModelCreatingAppointmentTest(ModelBuilder modelBuilder);
 
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
         {
@@ -21,7 +23,16 @@ namespace LabAppointmentSystem.API.Data
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            base.OnModelCreating(modelBuilder);
+
+            modelBuilder.Entity<IdentityUserLogin<string>>(b =>
+            {
+                b.HasKey(l => new { l.LoginProvider, l.ProviderKey });
+            });
+
             OnModelCreatingAppointment(modelBuilder);
+            OnModelCreatingTest(modelBuilder);
+            OnModelCreatingAppointmentTest(modelBuilder);
         }
     }
 }

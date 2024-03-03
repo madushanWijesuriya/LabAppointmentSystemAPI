@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LabAppointmentSystem.API.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20240229164340_initialTableCreation")]
+    [Migration("20240303142645_initialTableCreation")]
     partial class initialTableCreation
     {
         /// <inheritdoc />
@@ -24,6 +24,60 @@ namespace LabAppointmentSystem.API.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
+
+            modelBuilder.Entity("LabAppointmentSystem.API.Models.Appointment", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("EndAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("StartAt")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Appointment");
+                });
+
+            modelBuilder.Entity("LabAppointmentSystem.API.Models.AppointmentTest", b =>
+                {
+                    b.Property<int>("AppointmentId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("TestId")
+                        .HasColumnType("int");
+
+                    b.HasKey("AppointmentId", "TestId");
+
+                    b.HasIndex("TestId");
+
+                    b.ToTable("AppointmentTests");
+                });
+
+            modelBuilder.Entity("LabAppointmentSystem.API.Models.Test", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<double>("Price")
+                        .HasColumnType("float");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Test");
+                });
 
             modelBuilder.Entity("LabAppointmentSystem.API.Models.User", b =>
                 {
@@ -51,7 +105,6 @@ namespace LabAppointmentSystem.API.Migrations
                         .HasColumnType("bit");
 
                     b.Property<string>("Gender")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("LockoutEnabled")
@@ -272,11 +325,30 @@ namespace LabAppointmentSystem.API.Migrations
                     b.ToTable("Receptions");
                 });
 
-            modelBuilder.Entity("labappointmentsystem.api.models.Technician", b =>
+            modelBuilder.Entity("LabAppointmentSystem.API.Models.Technician", b =>
                 {
                     b.HasBaseType("LabAppointmentSystem.API.Models.User");
 
                     b.ToTable("Technicians");
+                });
+
+            modelBuilder.Entity("LabAppointmentSystem.API.Models.AppointmentTest", b =>
+                {
+                    b.HasOne("LabAppointmentSystem.API.Models.Appointment", "Appointment")
+                        .WithMany("AppointmentTests")
+                        .HasForeignKey("AppointmentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("LabAppointmentSystem.API.Models.Test", "Test")
+                        .WithMany("AppointmentTests")
+                        .HasForeignKey("TestId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Appointment");
+
+                    b.Navigation("Test");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -357,13 +429,23 @@ namespace LabAppointmentSystem.API.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("labappointmentsystem.api.models.Technician", b =>
+            modelBuilder.Entity("LabAppointmentSystem.API.Models.Technician", b =>
                 {
                     b.HasOne("LabAppointmentSystem.API.Models.User", null)
                         .WithOne()
-                        .HasForeignKey("labappointmentsystem.api.models.Technician", "Id")
+                        .HasForeignKey("LabAppointmentSystem.API.Models.Technician", "Id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("LabAppointmentSystem.API.Models.Appointment", b =>
+                {
+                    b.Navigation("AppointmentTests");
+                });
+
+            modelBuilder.Entity("LabAppointmentSystem.API.Models.Test", b =>
+                {
+                    b.Navigation("AppointmentTests");
                 });
 #pragma warning restore 612, 618
         }

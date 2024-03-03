@@ -10,6 +10,9 @@ namespace LabAppointmentSystem.API.Data
         partial void OnModelCreatingAppointment(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Appointment>()
+                .HasKey(at => new { at.Id });
+
+            modelBuilder.Entity<Appointment>()
                 .HasMany(a => a.AppointmentTests)
                 .WithOne(at => at.Appointment)
                 .HasForeignKey(at => at.AppointmentId);

@@ -22,63 +22,12 @@ namespace LabAppointmentSystem.API.Enums
         Remove,
     }
 
-    public enum DoctorSpecialization
+    public enum AppointmentStatus
     {
-        [Description("General Practitioner")]
-        GeneralPractitioner,
-
-        [Description("Cardiologist")]
-        Cardiologist,
-
-        [Description("Dermatologist")]
-        Dermatologist,
-
-        [Description("Pediatrician")]
-        Pediatrician,
-
-        [Description("Surgeon")]
-        Surgeon,
-
-        [Description("Neurologist")]
-        Neurologist,
-
-        [Description("Psychiatrist")]
-        Psychiatrist,
-
-        [Description("Orthopedician")]
-        Orthopedician,
-
-        [Description("Gynecologist")]
-        Gynecologist,
-
-        [Description("Urologist")]
-        Urologist,
-
-        [Description("Ophthalmologist")]
-        Ophthalmologist,
-
-        [Description("ENT Specialist")]
-        ENT_Specialist,
-
-        [Description("Oncologist")]
-        Oncologist,
-
-        [Description("Dentist")]
-        Dentist,
-
-        [Description("Radiologist")]
-        Radiologist,
-
-        [Description("Physiotherapist")]
-        Physiotherapist,
-
-        [Description("Psychologist")]
-        Psychologist,
-
-        [Description("Endocrinologist")]
-        Endocrinologist,
-
-        [Description("Infectious Disease Specialist")]
-        InfectiousDiseaseSpecialist
+        Pending,
+        Verified,
+        Paid,
+        Rejected,
+        Cancel,
     }
 }
