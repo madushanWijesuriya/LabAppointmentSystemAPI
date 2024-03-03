@@ -9,10 +9,26 @@ namespace LabAppointmentSystem.API.Services.Classes
     public class AppointmentService : IAppointmentService
     {
         private readonly IAppointmentRepository _AppointmentRepository;
+        private readonly IAppointmentTestRepository _AppointmentTestRepository;
 
-        public AppointmentService(IAppointmentRepository AppointmentRepository)
+        public AppointmentService(IAppointmentRepository AppointmentRepository, IAppointmentTestRepository appointmentTestRepository)
         {
             _AppointmentRepository = AppointmentRepository;
+            _AppointmentTestRepository = appointmentTestRepository;
+        }
+
+        public void AssignTests(List<int> testIds, int appointmentId)
+        {
+            foreach (int testId in testIds)
+            {
+                var appointmentTest = new AppointmentTest
+                {
+                    AppointmentId = appointmentId,
+                    TestId = testId,
+                };
+
+                _AppointmentTestRepository.SaveAppointmentTest(appointmentTest);
+            }
         }
 
         //public IQueryable<Appointment> GetAllAppointments()

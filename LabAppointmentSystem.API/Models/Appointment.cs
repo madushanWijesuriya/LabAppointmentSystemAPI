@@ -10,6 +10,6 @@ namespace LabAppointmentSystem.API.Models
         public DateTime EndAt { get; set; }
         public AppointmentStatus WorkFlow { get; set; }
         public Status Status { get; set; }
-        public ICollection<AppointmentTest> AppointmentTests { get; set; }
+        public virtual ICollection<AppointmentTest>? AppointmentTests { get; set; }
     }
 }

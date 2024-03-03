@@ -1,5 +1,4 @@
 using LabAppointmentSystem.API.Data;
-using LabAppointmentSystem.API.Mappers;
 using LabAppointmentSystem.API.Models;
 using LabAppointmentSystem.API.Repositories;
 using LabAppointmentSystem.API.Services.Classes;
@@ -29,6 +28,9 @@ builder.Services.AddScoped<ITechnicianRepository, TechnicianRepository>();
 builder.Services.AddScoped<ITechnicianService, TechnicianService>();
 builder.Services.AddScoped<IAppointmentRepository, AppointmentRepository>();
 builder.Services.AddScoped<IAppointmentService, AppointmentService>();
+builder.Services.AddScoped<IAppointmentTestRepository, AppointmentTestRepository>();
+builder.Services.AddScoped<ITestRepository, TestRepository>();
+builder.Services.AddScoped<ITestService, TestService>();
 
 builder.Services.AddIdentity<User, IdentityRole>()
     .AddEntityFrameworkStores<AppDbContext>()

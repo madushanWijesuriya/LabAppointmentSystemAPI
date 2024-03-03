@@ -7,5 +7,6 @@ namespace LabAppointmentSystem.API.Services.Interfaces
     {
         //IQueryable<Appointment> GetAllAppointments();
         void CreateAppointment(Appointment AppointmentDto);
+        void AssignTests(List<int> testIds, int appointmentId);
     }
 }

@@ -5,7 +5,7 @@ namespace LabAppointmentSystem.API.Data
 {
     public partial class AppDbContext
     {
-        public DbSet<Appointment> Tests { get; set; }
+        public DbSet<Test> Tests { get; set; }
 
         partial void OnModelCreatingTest(ModelBuilder modelBuilder)
         {
