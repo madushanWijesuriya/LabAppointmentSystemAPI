@@ -1,9 +1,6 @@
-﻿using LabAppointmentSystem.API.Dtos;
-using LabAppointmentSystem.API.Models;
-using LabAppointmentSystem.API.Services.Classes;
+﻿using LabAppointmentSystem.API.Models;
 using LabAppointmentSystem.API.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 

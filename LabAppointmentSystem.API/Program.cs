@@ -18,10 +18,15 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 });
 
 builder.Services.AddScoped<UserManager<User>>();
+builder.Services.AddScoped<IJwtTokenService, JwtTokenService>();
+builder.Services.AddScoped<IExceptionHandlingService, ExceptionHandlingService>();
 
 builder.Services.AddScoped<IDoctorRepository, DoctorRepository>();
 builder.Services.AddScoped<IDoctorService, DoctorService>();
-builder.Services.AddScoped<IJwtTokenService, JwtTokenService>();
+builder.Services.AddScoped<IReceptionRepository, ReceptionRepository>();
+builder.Services.AddScoped<IReceptionService, ReceptionService>();
+builder.Services.AddScoped<ITechnicianRepository, TechnicianRepository>();
+builder.Services.AddScoped<ITechnicianService, TechnicianService>();
 
 builder.Services.AddIdentity<User, IdentityRole>()
     .AddEntityFrameworkStores<AppDbContext>()
@@ -64,9 +69,9 @@ builder.Services.AddAuthorization(options =>
     {
         policy.RequireRole("Patient");
     });
-    options.AddPolicy("RequireTechRole", policy =>
+    options.AddPolicy("RequireTechnicianRole", policy =>
     {
-        policy.RequireRole("Tech");
+        policy.RequireRole("Technician");
     });
     options.AddPolicy("RequireReceptionRole", policy =>
     {
@@ -120,7 +125,7 @@ async Task CreateRolesAsync(IServiceProvider serviceProvider)
 {
     var roleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
 
-    string[] roleNames = { "Admin", "Doctor", "Patient", "Tech", "Reception" };
+    string[] roleNames = { "Admin", "Doctor", "Patient", "Technician", "Reception" };
 
     IdentityResult roleResult;
 
