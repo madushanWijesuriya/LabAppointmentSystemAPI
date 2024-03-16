@@ -15,5 +15,7 @@ namespace LabAppointmentSystem.API.Models
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }
         public Status Status { get; set; }
+        [NotMapped]
+        public virtual string? Role { get; set; }
     }
 }

@@ -39,7 +39,7 @@ namespace LabAppointmentSystem.API.Services.Classes
                 _configuration["Jwt:Issuer"],
                 _configuration["Jwt:Issuer"],
                 claims,
-                expires: DateTime.Now.AddMinutes(1),
+                expires: DateTime.Now.AddDays(1),
                 signingCredentials: credentials
             );
 

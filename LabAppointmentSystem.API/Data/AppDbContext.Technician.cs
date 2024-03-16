@@ -1,22 +1,21 @@
-﻿//using LabAppointmentSystem.API.Models;
-//using Microsoft.EntityFrameworkCore;
+﻿using LabAppointmentSystem.API.Models;
+using Microsoft.EntityFrameworkCore;
 
-//namespace LabAppointmentSystem.API.Data
-//{
-//    public partial class AppDbContext
-//    {
-//        public DbSet<Technician> Technician { get; set; }
+namespace LabAppointmentSystem.API.Data
+{
+    public partial class AppDbContext
+    {
+        public DbSet<Technician> Technicians { get; set; }
 
-//        void ConfigureTechnicianRelationships(ModelBuilder builder)
-//        {
+        partial void OnModelCreatingTechnician(ModelBuilder modelBuilder)
+        {
+            
 
-//            builder.Entity<Technician>()
-//            .HasOne(p => p.User)
-//            .WithOne()
-//            .HasForeignKey<Technician>(p => p.UserId)
-//            .IsRequired()
-//            .OnDelete(DeleteBehavior.Cascade);
+            //modelBuilder.Entity<Technician>()
+            //    .HasMany(a => a.AppointmentTests)
+            //    .WithOne(at => at.Technician)
+            //    .HasForeignKey(at => at.TechnicianId);
 
-//        }
-//    }
-//}
+        }
+    }
+}

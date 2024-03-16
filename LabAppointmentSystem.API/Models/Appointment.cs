@@ -1,15 +1,14 @@
-﻿using LabAppointmentSystem.API.Enums;
+﻿using LabAppointmentSystem.API.Payloads;
 using System.ComponentModel.DataAnnotations.Schema;
-
 namespace LabAppointmentSystem.API.Models
 {
-    public class Appointment
+    public class Appointment : AppointmentPayload
     {
         public int Id { get; set; }
-        public DateTime StartAt { get; set; }
-        public DateTime EndAt { get; set; }
-        public AppointmentStatus WorkFlow { get; set; }
-        public Status Status { get; set; }
+        public string PatientId { get; set; }
+        [NotMapped]
+        public string? FormatedTime { get; set; }
         public virtual ICollection<AppointmentTest>? AppointmentTests { get; set; }
+        public virtual Patient? Patient { get; set; }
     }
 }
