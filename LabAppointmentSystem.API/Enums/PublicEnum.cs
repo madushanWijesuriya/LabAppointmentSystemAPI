@@ -24,10 +24,15 @@ namespace LabAppointmentSystem.API.Enums
 
     public enum AppointmentStatus
     {
-        Pending,
+        Created,
         Verified,
         Paid,
-        Rejected,
+        CheckIn,
+        TestAssigned,
+        TestCompleted,
+        ResultOut,
+        Completed,
         Cancel,
+        Rejected
     }
 }
