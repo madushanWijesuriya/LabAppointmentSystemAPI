@@ -30,19 +30,25 @@ namespace LabAppointmentSystem.API.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<DateTime>("EndAt")
+                    b.Property<DateTime>("Date")
                         .HasColumnType("datetime2");
 
-                    b.Property<DateTime>("StartAt")
-                        .HasColumnType("datetime2");
+                    b.Property<string>("PatientId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<int>("Status")
                         .HasColumnType("int");
+
+                    b.Property<double>("Time")
+                        .HasColumnType("float");
 
                     b.Property<int>("WorkFlow")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("PatientId");
 
                     b.ToTable("Appointments");
                 });
@@ -54,6 +60,9 @@ namespace LabAppointmentSystem.API.Migrations
 
                     b.Property<int>("TestId")
                         .HasColumnType("int");
+
+                    b.Property<string>("Result")
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("AppointmentId", "TestId");
 
@@ -338,6 +347,17 @@ namespace LabAppointmentSystem.API.Migrations
                     b.ToTable("Technicians");
                 });
 
+            modelBuilder.Entity("LabAppointmentSystem.API.Models.Appointment", b =>
+                {
+                    b.HasOne("LabAppointmentSystem.API.Models.Patient", "Patient")
+                        .WithMany("Appointments")
+                        .HasForeignKey("PatientId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Patient");
+                });
+
             modelBuilder.Entity("LabAppointmentSystem.API.Models.AppointmentTest", b =>
                 {
                     b.HasOne("LabAppointmentSystem.API.Models.Appointment", "Appointment")
@@ -452,6 +472,11 @@ namespace LabAppointmentSystem.API.Migrations
             modelBuilder.Entity("LabAppointmentSystem.API.Models.Test", b =>
                 {
                     b.Navigation("AppointmentTests");
+                });
+
+            modelBuilder.Entity("LabAppointmentSystem.API.Models.Patient", b =>
+                {
+                    b.Navigation("Appointments");
                 });
 #pragma warning restore 612, 618
         }

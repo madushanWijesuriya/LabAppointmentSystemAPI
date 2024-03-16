@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LabAppointmentSystem.API.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20240316044327_migration1")]
+    [Migration("20240316045913_migration1")]
     partial class migration1
     {
         /// <inheritdoc />
