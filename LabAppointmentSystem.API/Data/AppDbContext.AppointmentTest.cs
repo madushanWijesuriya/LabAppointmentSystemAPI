@@ -10,7 +10,7 @@ namespace LabAppointmentSystem.API.Data
         partial void OnModelCreatingAppointmentTest(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<AppointmentTest>()
-            .HasKey(at => new { at.AppointmentId, at.TestId });
+            .HasKey(at => new { at.AppointmentId, at.TestId});
 
             modelBuilder.Entity<AppointmentTest>()
                 .HasOne(at => at.Appointment)
@@ -26,6 +26,13 @@ namespace LabAppointmentSystem.API.Data
                 .HasOne(at => at.Test)
                 .WithMany(t => t.AppointmentTests)
                 .HasForeignKey(at => at.TestId);
+
+            modelBuilder.Entity<AppointmentTest>()
+                .HasOne(at => at.Technician)
+                .WithMany(t => t.AppointmentTests)
+                .HasForeignKey(at => at.TechnicianId)
+                .OnDelete(DeleteBehavior.NoAction);
+
         }
     }
 }
