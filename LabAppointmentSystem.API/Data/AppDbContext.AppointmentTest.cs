@@ -22,6 +22,8 @@ namespace LabAppointmentSystem.API.Data
                 .WithMany(a => a.AppointmentTests)
                 .HasForeignKey(at => at.AppointmentId);
 
+            modelBuilder.Entity<AppointmentTest>()
+                .HasOne(at => at.Test)
                 .WithMany(t => t.AppointmentTests)
                 .HasForeignKey(at => at.TestId);
         }
