@@ -37,7 +37,7 @@ namespace LabAppointmentSystem.API.Controllers
 
             if (role == "Technician")
             {
-                appointments = appointments.Where(a => a.WorkFlow == AppointmentStatus.CheckIn);
+                appointments = appointments.Where(a => a.WorkFlow == AppointmentStatus.CheckIn && a.AppointmentTests.Count() > 0);
             }
             else if (role == "Reception")
             {
@@ -84,7 +84,7 @@ namespace LabAppointmentSystem.API.Controllers
         }
 
         [HttpPut("{id}")]
-        [Authorize(Roles = "Admin")]
+        [Authorize(Policy = "RequireStaff")]
         public async Task<IActionResult> Update(int id, AppointmentPayload updatedAppointment)
         {
             try
@@ -144,7 +144,6 @@ namespace LabAppointmentSystem.API.Controllers
                 return BadRequest(_exceptionHandlingService.HandleExceptionAsync(ex));
             }
         }
-
 
     }
 }

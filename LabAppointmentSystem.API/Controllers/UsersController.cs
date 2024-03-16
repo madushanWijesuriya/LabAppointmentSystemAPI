@@ -38,7 +38,7 @@ namespace LabAppointmentSystem.API.Controllers
                     user.Role = role.FirstOrDefault();
                 }
 
-                return Ok(users);
+                return Ok(users.Where(r => r.Role != "Admin").ToList());
             }
             catch (Exception ex)
             {

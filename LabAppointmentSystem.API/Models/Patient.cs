@@ -9,6 +9,7 @@ namespace LabAppointmentSystem.API.Models
         public DateTime DateOfBirth { get; set; }
         [BindNever]
         public virtual ICollection<Appointment>? Appointments { get; set; }
+        public virtual ICollection<Invoice>? Invoices { get; set; }
 
     }
 }

@@ -15,6 +15,7 @@ namespace LabAppointmentSystem.API.Data
         partial void OnModelCreatingAppointment(ModelBuilder modelBuilder);
         partial void OnModelCreatingTest(ModelBuilder modelBuilder);
         partial void OnModelCreatingAppointmentTest(ModelBuilder modelBuilder);
+        partial void OnModelCreatingInvoice(ModelBuilder modelBuilder);
 
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
         {
@@ -33,6 +34,7 @@ namespace LabAppointmentSystem.API.Data
             OnModelCreatingAppointment(modelBuilder);
             OnModelCreatingTest(modelBuilder);
             OnModelCreatingAppointmentTest(modelBuilder);
+            OnModelCreatingInvoice(modelBuilder);
         }
     }
 }

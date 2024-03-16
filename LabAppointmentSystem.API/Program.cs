@@ -74,9 +74,9 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddAuthorization(options =>
 {
-    options.AddPolicy("RequireAdminRole", policy =>
+    options.AddPolicy("RequireStaff", policy =>
     {
-        policy.RequireRole("Admin");
+        policy.RequireRole("Admin", "Technician", "Reception");
     });
     options.AddPolicy("RequireDoctorRole", policy =>
     {
