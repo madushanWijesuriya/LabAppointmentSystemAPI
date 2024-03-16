@@ -28,20 +28,7 @@ namespace LabInvoiceSystem.API.Repositories
 
         public void UpdateInvoice(int id, Invoice updatedInvoice)
         {
-            var existingInvoice = _dbContext.Invoices.Find(updatedInvoice.Id);
-
-            if (existingInvoice == null)
-            {
-                throw new ArgumentException("Invoice not found");
-            }
-
-            // Update Invoice properties
-            existingInvoice.Date = updatedInvoice.Date;
-            existingInvoice.Time = updatedInvoice.Time;
-            existingInvoice.WorkFlow = updatedInvoice.WorkFlow;
-            existingInvoice.Status = updatedInvoice.Status;
-
-            _dbContext.SaveChanges();
+            throw new NotImplementedException();
         }
     }
 }
