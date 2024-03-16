@@ -1,10 +1,8 @@
 ﻿using LabAppointmentSystem.API.Dtos;
-using LabAppointmentSystem.API.Enums;
 using LabAppointmentSystem.API.Mappers;
 using LabAppointmentSystem.API.Models;
 using LabAppointmentSystem.API.Repositories;
 using LabAppointmentSystem.API.Services.Interfaces;
-using Microsoft.AspNetCore.Identity;
 
 namespace LabAppointmentSystem.API.Services.Classes
 {
@@ -12,13 +10,10 @@ namespace LabAppointmentSystem.API.Services.Classes
     {
         private readonly IAppointmentRepository _AppointmentRepository;
         private readonly IAppointmentTestRepository _AppointmentTestRepository;
-        private readonly UserManager<User> _userManageService;
 
-        public AppointmentService(IAppointmentRepository AppointmentRepository, UserManager<User> userManageService,
-            IAppointmentTestRepository appointmentTestRepository)
+        public AppointmentService(IAppointmentRepository AppointmentRepository, IAppointmentTestRepository appointmentTestRepository)
         {
             _AppointmentRepository = AppointmentRepository;
-            _userManageService = userManageService;
             _AppointmentTestRepository = appointmentTestRepository;
         }
 
@@ -36,25 +31,17 @@ namespace LabAppointmentSystem.API.Services.Classes
             }
         }
 
-        public IQueryable<Appointment> RetrievAllAppointments()
-        {
-            return _AppointmentRepository.GetAllAppointments();
-        }
+        //public IQueryable<Appointment> GetAllAppointments()
+        //{
+        //    var Appointments = _AppointmentRepository.GetAllAppointments();
 
-        public Appointment GetAppointmentById(int id) 
-        {
-            return _AppointmentRepository.GetAppointment(id);
-        }
+        //    return Appointments.Select(AppointmentMapper.ToDto)
+        //        .AsQueryable();
+        //}
 
         public void CreateAppointment(Appointment Appointment)
         {
             _AppointmentRepository.SaveAppointment(Appointment);
         }
-
-        public void UpdateAppointment(int appointmentId, Appointment updatedAppointment)
-        {
-            _AppointmentRepository.UpdateAppointment(appointmentId, updatedAppointment);
-        }
-
     }
 }

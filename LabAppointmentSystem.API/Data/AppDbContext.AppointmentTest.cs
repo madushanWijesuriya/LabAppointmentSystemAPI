@@ -18,16 +18,9 @@ namespace LabAppointmentSystem.API.Data
                 .HasForeignKey(at => at.AppointmentId);
 
             modelBuilder.Entity<AppointmentTest>()
-                .HasOne(at => at.Appointment)
-                .WithMany(a => a.AppointmentTests)
-                .HasForeignKey(at => at.AppointmentId);
-
-            modelBuilder.Entity<AppointmentTest>()
-                .HasOne(at => at.Technician)
+                .HasOne(at => at.Test)
                 .WithMany(t => t.AppointmentTests)
-                .HasForeignKey(at => at.TechnicianId)
-                .OnDelete(DeleteBehavior.Restrict);
-
+                .HasForeignKey(at => at.TestId);
         }
     }
 }

@@ -1,8 +1,5 @@
 ﻿using LabAppointmentSystem.API.Models;
-using LabAppointmentSystem.API.Services.Classes;
 using LabAppointmentSystem.API.Services.Interfaces;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace LabTestSystem.API.Controllers
@@ -18,21 +15,6 @@ namespace LabTestSystem.API.Controllers
         {
             _testService = testService;
             _exceptionHandlingService = exceptionHandlingService;
-        }
-
-        [HttpGet]
-        [Authorize(Roles = "Admin")]
-        public ActionResult<IQueryable<Doctor>> GetAllTests()
-        {
-            try
-            {
-                var tests = _testService.GetAllTests();
-                return Ok(tests);
-            }
-            catch (Exception ex)
-            {
-                return BadRequest(_exceptionHandlingService.HandleExceptionAsync(ex));
-            }
         }
 
         [HttpPost]

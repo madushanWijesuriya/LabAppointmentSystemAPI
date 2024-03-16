@@ -6,6 +6,5 @@ namespace LabAppointmentSystem.API.Models
 
     public class Technician : User
     {
-        public virtual ICollection<AppointmentTest>? AppointmentTests { get; set; }
     }
 }

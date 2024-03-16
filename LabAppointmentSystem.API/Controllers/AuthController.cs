@@ -1,17 +1,18 @@
 ﻿using LabAppointmentSystem.API.Models;
 using LabAppointmentSystem.API.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Cors;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Text;
 
 namespace LabAppointmentSystem.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    [EnableCors("AllowSpecificOrigin")]
-    [Authorize]
-
     public class AuthController : ControllerBase
     {
         private readonly UserManager<User> _userManager;
@@ -43,7 +44,6 @@ namespace LabAppointmentSystem.API.Controllers
                 var roles = await _userManager.GetRolesAsync(user);
 
                 var token = _jwtTokenService.GenerateJwtToken(user, roles);
-
                 return Ok(new { Token = token });
             }
 
@@ -53,20 +53,18 @@ namespace LabAppointmentSystem.API.Controllers
 
         [HttpPost("Register")]
         [AllowAnonymous]
-        public async Task<IActionResult> Register(Patient patient)
+        public async Task<IActionResult> Register(User user)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            var result = await _userManager.CreateAsync(patient, patient.Password);
+            var result = await _userManager.CreateAsync(user, user.Password);
 
             if (result.Succeeded)
             {
-                await _userManager.AddToRoleAsync(patient, "Patient");
-
-                var token = _jwtTokenService.GenerateJwtToken(patient);
+                var token = _jwtTokenService.GenerateJwtToken(user);
                 return Ok(new { Token = token });
             }
 
@@ -78,35 +76,5 @@ namespace LabAppointmentSystem.API.Controllers
             return BadRequest(ModelState);
         }
 
-        [HttpGet("CheckToken")]
-        public IActionResult CheckTokenExpiration()
-        {
-            var user = HttpContext.User;
-
-            if (user.Identity.IsAuthenticated)
-            {
-                var expirationClaim = user.FindFirst("exp");
-
-                if (expirationClaim != null && long.TryParse(expirationClaim.Value, out long expirationTime))
-                {
-                    var currentTime = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
-
-                    if (expirationTime < currentTime)
-                    {
-                        return Ok(new { IsTokenExpired = true });
-                    }
-                    else
-                    {
-                        return Ok(new { IsTokenExpired = false });
-                    }
-                }
-            }
-
-            return BadRequest(new { Message = "Invalid or expired token" });
-        }
-
-
     }
-
-
 }
