@@ -18,9 +18,9 @@ namespace LabAppointmentSystem.API.Services.Classes
             _invoiceRepository.SaveInvoice(invoiceDto);
         }
 
-        public Invoice GetInvoiceById(int id)
+        public Invoice GetInvoiceByAppointmentId(int id)
         {
-            throw new NotImplementedException();
+            return _invoiceRepository.GetAllInvoices().Where(a => a.AppointmentId == id).FirstOrDefault();
         }
 
         public IQueryable<Invoice> RetrievAllInvoices()
@@ -28,9 +28,9 @@ namespace LabAppointmentSystem.API.Services.Classes
             throw new NotImplementedException();
         }
 
-        public void UpdateInvoice(int invoiceId, Invoice updatedInvoice)
+        public void UpdateInvoice(Invoice updatedInvoice)
         {
-            throw new NotImplementedException();
+            _invoiceRepository.UpdateInvoice(updatedInvoice);
         }
     }
 }

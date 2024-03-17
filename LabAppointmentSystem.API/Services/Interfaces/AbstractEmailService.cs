@@ -1,10 +1,13 @@
 ﻿using System.Net.Mail;
 using System.Net;
+using LabAppointmentSystem.API.Models;
 
-namespace LabAppointmentSystem.API.Services.Classes
+namespace LabAppointmentSystem.API.Services.Interfaces
 {
-    public class EmailService
+    public abstract class AbstractEmailService
     {
+        public abstract void createEmailBodyAndSendEmail(User user, Appointment appointment);
+
         public void SendEmail(string to, string subject, string body)
         {
             var fromAddress = new MailAddress("shanwijesuriya.madushan@gmail.com", "ICBT LAB");

@@ -9,6 +9,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.OData.Query;
+using Microsoft.EntityFrameworkCore;
 
 namespace LabAppointmentSystem.API.Controllers
 {
@@ -109,19 +110,17 @@ namespace LabAppointmentSystem.API.Controllers
                     var user = await _userManageService.FindByIdAsync(storageAppointment.PatientId.ToString());
                     if (user != null)
                     {
-                        var userEmail = user.Email;
-                        var emailService = new EmailService();
-                        var emailBody = $"Hi {user.Name},\n\n" +
-                        $"This is a reminder that your appointment is now in progress. " +
-                        $"Please make sure to pay the full amount to proceed.\n\n" +
-                        $"Appointment Details:\n" +
-                        $"Id: {storageAppointment.Id}\n" +
-                        $"Date: {storageAppointment.Date}\n" +
-                        $"Time: {storageAppointment.Time}\n" +
-                        $"Thank you for choosing our services.\n\n" +
-                        $"Best regards,\n" +
-                        $"ICBT Appointment Lab";
-                        emailService.SendEmail(userEmail, "ICBT Lab Payment Reminder", emailBody);
+                        var emailService = new AppointmentVerifiedEmailService();
+                        emailService.createEmailBodyAndSendEmail(user, storageAppointment);
+                    }
+                }
+                else if (updatedAppointment.WorkFlow == AppointmentStatus.TestCompleted)
+                {
+                    var user = await _userManageService.FindByIdAsync(storageAppointment.PatientId.ToString());
+                    if (user != null)
+                    {
+                        var emailService = new PaymentReminderEmailService();
+                        emailService.createEmailBodyAndSendEmail(user, storageAppointment);
                     }
                 }
                 else if (updatedAppointment.WorkFlow == AppointmentStatus.TestAssigned)

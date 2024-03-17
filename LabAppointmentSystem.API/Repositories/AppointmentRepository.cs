@@ -13,11 +13,12 @@ namespace LabAppointmentSystem.API.Repositories
             _dbContext = dbContext;
         }
 
-        public IQueryable<Appointment> GetAllAppointments() => _dbContext.Appointments.Include(r => r.AppointmentTests);
+        public IQueryable<Appointment> GetAllAppointments() => _dbContext.Appointments.Include(r => r.AppointmentTests).Include(x => x.Invoice);
 
         public Appointment GetAppointment(int id)
         {
             return _dbContext.Appointments.Where(x => x.Id == id)
+                .Include(x => x.Invoice)
                 .Include(x => x.AppointmentTests)
                     .ThenInclude(at => at.Test)
                         .First();

@@ -6,8 +6,8 @@ namespace LabInvoiceSystem.API.Services.Interfaces
     {
         IQueryable<Invoice> RetrievAllInvoices();
         void CreateInvoice(Invoice invoiceDto);
-        Invoice GetInvoiceById(int id);
-        void UpdateInvoice(int invoiceId, Invoice updatedInvoice);
+        Invoice GetInvoiceByAppointmentId(int id);
+        void UpdateInvoice(Invoice updatedInvoice);
 
     }
 }

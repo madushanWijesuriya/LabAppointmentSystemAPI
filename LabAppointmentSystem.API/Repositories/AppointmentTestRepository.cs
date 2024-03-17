@@ -38,7 +38,7 @@ namespace LabAppointmentSystem.API.Repositories
             _dbContext.SaveChanges();
         }
 
-        public void UpdateAppointmentTest(int id, AppointmentTestPayload appointmentTestPayload)
+        public void UpdateAppointmentTest(string techId,int id, AppointmentTestPayload appointmentTestPayload)
         {
             var existingAppointmentTest = _dbContext.AppointmentTests.Where(x => 
                 x.AppointmentId == appointmentTestPayload.AppointmentId 
@@ -52,6 +52,7 @@ namespace LabAppointmentSystem.API.Repositories
             }
 
             existingAppointmentTest.Result = appointmentTestPayload.Result;
+            existingAppointmentTest.TechnicianId = techId;
             _dbContext.SaveChanges();
         }
     }

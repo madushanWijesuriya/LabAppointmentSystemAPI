@@ -17,9 +17,9 @@ namespace LabAppointmentSystem.API.Services.Classes
             return _AppointmentTestRepository.GetAllAppointmentTests(appointmentId);
         }
 
-        public void UpdateAppointmentTest(int appointmentTestId, AppointmentTestPayload appointmentTestPayload)
+        public void UpdateAppointmentTest(string techId,int appointmentTestId, AppointmentTestPayload appointmentTestPayload)
         {
-            _AppointmentTestRepository.UpdateAppointmentTest(appointmentTestId, appointmentTestPayload);
+            _AppointmentTestRepository.UpdateAppointmentTest(techId,appointmentTestId, appointmentTestPayload);
         }
     }
 }

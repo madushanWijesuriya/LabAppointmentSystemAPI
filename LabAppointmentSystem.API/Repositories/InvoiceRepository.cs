@@ -1,6 +1,7 @@
 ﻿using LabAppointmentSystem.API.Data;
 using LabAppointmentSystem.API.Models;
 using Microsoft.EntityFrameworkCore;
+using System.Linq;
 
 namespace LabInvoiceSystem.API.Repositories
 {
@@ -26,9 +27,15 @@ namespace LabInvoiceSystem.API.Repositories
             _dbContext.SaveChanges();
         }
 
-        public void UpdateInvoice(int id, Invoice updatedInvoice)
+        public void UpdateInvoice(Invoice updatedInvoice)
         {
-            throw new NotImplementedException();
+            var storageInvoice = _dbContext.Invoices.Find(updatedInvoice.Id);
+            if (storageInvoice == null)
+            {
+                throw new ArgumentException("Invoice not found");
+            }
+            storageInvoice.IsPaid = true;
+            _dbContext.SaveChanges();
         }
     }
 }

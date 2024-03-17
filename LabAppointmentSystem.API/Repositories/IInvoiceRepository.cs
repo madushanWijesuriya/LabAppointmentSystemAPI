@@ -6,6 +6,6 @@ namespace LabInvoiceSystem.API.Repositories
     {
         IQueryable<Invoice> GetAllInvoices();
         void SaveInvoice(Invoice invoice);
-        void UpdateInvoice(int id, Invoice updatedInvoice);
+        void UpdateInvoice(Invoice updatedInvoice);
     }
 }
