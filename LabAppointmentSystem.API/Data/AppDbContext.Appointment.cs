@@ -25,7 +25,7 @@ namespace LabAppointmentSystem.API.Data
             modelBuilder.Entity<Appointment>()
                 .HasOne(at => at.Invoice) 
                 .WithOne(i => i.Appointment) 
-                .HasForeignKey<Invoice>(i => i.AppointmentId); 
+                .HasForeignKey<Appointment>(i => i.InvoiceId); 
 
         }
     }
