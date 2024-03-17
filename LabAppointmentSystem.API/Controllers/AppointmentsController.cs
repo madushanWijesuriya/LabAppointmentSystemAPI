@@ -57,7 +57,8 @@ namespace LabAppointmentSystem.API.Controllers
                 Date = appointment.Date,
                 AppointmentTests = appointment.AppointmentTests,
                 PatientId = appointment.PatientId,
-                Time = appointment.Time
+                Time = appointment.Time,
+                Invoice = appointment.Invoice,
             });
             return Ok(appointmentDtos);
         }
@@ -101,11 +102,36 @@ namespace LabAppointmentSystem.API.Controllers
                     WorkFlow = updatedAppointment.WorkFlow,
                     Status = updatedAppointment.Status
                 };
-
-                _appointmentService.UpdateAppointment(id, model);
                 var storageAppointment = _appointmentService.GetAppointmentById(id);
+                _appointmentService.UpdateAppointment(id, model);
 
-                if (storageAppointment != null && storageAppointment.WorkFlow == AppointmentStatus.Verified)
+                if (updatedAppointment.WorkFlow == AppointmentStatus.TestAssigned)
+                {
+
+                    if (storageAppointment.AppointmentTests.Count > 0)
+                    {
+                        double amount = 0;
+
+                        foreach (var appointmentTest in storageAppointment.AppointmentTests)
+                        {
+                            amount = amount + appointmentTest.Test.Price;
+                        }
+                        var invoice = new Invoice
+                        {
+                            AppointmentId = id,
+                            PatientId = storageAppointment.PatientId.ToString(),
+                            Amount = amount
+                        };
+
+                        _invoiceService.CreateInvoice(invoice);
+                        var insertedInvoice = _invoiceService.GetInvoiceByAppointmentId(invoice.AppointmentId);
+                        storageAppointment.InvoiceId = insertedInvoice.Id;
+                        _appointmentService.UpdateAppointment(id, storageAppointment);
+
+                    }
+
+                }
+                else if (storageAppointment != null && storageAppointment.WorkFlow == AppointmentStatus.Verified)
                 {
                     var user = await _userManageService.FindByIdAsync(storageAppointment.PatientId.ToString());
                     if (user != null)
@@ -123,27 +149,7 @@ namespace LabAppointmentSystem.API.Controllers
                         emailService.createEmailBodyAndSendEmail(user, storageAppointment);
                     }
                 }
-                else if (updatedAppointment.WorkFlow == AppointmentStatus.TestAssigned)
-                {
-                    if(storageAppointment.AppointmentTests.Count > 0)
-                    {
-                        double amount = 0;
-
-                        foreach (var appointmentTest in storageAppointment.AppointmentTests)
-                        {
-                            amount = amount + appointmentTest.Test.Price;
-                        }
-                        var invoice = new Invoice
-                        {
-                            AppointmentId = id,
-                            PatientId = storageAppointment.PatientId.ToString(),
-                            Amount = amount
-                        };
-
-                        _invoiceService.CreateInvoice(invoice);
-                    }
-                    
-                }
+                
 
                 return Ok(model);
             }

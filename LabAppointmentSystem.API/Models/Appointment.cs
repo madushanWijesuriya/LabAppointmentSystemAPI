@@ -6,7 +6,7 @@ namespace LabAppointmentSystem.API.Models
     {
         public int Id { get; set; }
         public string PatientId { get; set; }
-        public string? InvoiceId { get; set; }
+        public int? InvoiceId { get; set; }
         [NotMapped]
         public string? FormatedTime { get; set; }
         public virtual ICollection<AppointmentTest>? AppointmentTests { get; set; }

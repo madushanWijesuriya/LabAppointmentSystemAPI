@@ -54,29 +54,7 @@ namespace LabAppointmentSystem.API.Controllers
             {
                 var userId = UserId;
                 _appointmentService.UpdateAppointmentTest(userId, id, updatedAppointmentTest);
-                //var storageAppointment = _appService.GetAppointmentById(id);
-
-                //if(storageAppointment != null && storageAppointment.WorkFlow == AppointmentStatus.TestCompleted)
-                //{
-                //    var user = await _userManageService.FindByIdAsync(storageAppointment.PatientId.ToString());
-                //    if (user != null)
-                //    {
-                //        var userEmail = user.Email;
-                //        var emailService = new EmailService();
-                //        var emailBody = $"Hi {user.Name},\n\n" +
-                //        $"This is a reminder that your appointment test result is out. " +
-                //        $"Please make sure to pay the full amount to view results.\n\n" +
-                //        $"Appointment Details:\n" +
-                //        $"Id: {storageAppointment.Id}\n" +
-                //        $"Date: {storageAppointment.Date}\n" +
-                //        $"Time: {storageAppointment.Time}\n" +
-                //        $"Thank you for choosing our services.\n\n" +
-                //        $"Best regards,\n" +
-                //        $"ICBT Appointment Lab";
-                //        emailService.SendEmail(userEmail, "ICBT Lab Payment Reminder", emailBody);
-                //    }
-                //}
-
+                
                 return Ok();
             }
             catch (Exception ex)
