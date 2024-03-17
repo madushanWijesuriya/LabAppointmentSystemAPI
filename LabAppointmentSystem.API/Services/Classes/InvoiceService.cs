@@ -1,13 +1,21 @@
 ﻿using LabAppointmentSystem.API.Models;
+using LabAppointmentSystem.API.Repositories;
+using LabInvoiceSystem.API.Repositories;
 using LabInvoiceSystem.API.Services.Interfaces;
 
 namespace LabAppointmentSystem.API.Services.Classes
 {
     public class InvoiceService : IInvoiceService
     {
+        private readonly IInvoiceRepository _invoiceRepository;
+
+        public InvoiceService(IInvoiceRepository invoiceRepository)
+        {
+            _invoiceRepository = invoiceRepository;
+        }
         public void CreateInvoice(Invoice invoiceDto)
         {
-            throw new NotImplementedException();
+            _invoiceRepository.SaveInvoice(invoiceDto);
         }
 
         public Invoice GetInvoiceById(int id)

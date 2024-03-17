@@ -17,7 +17,10 @@ namespace LabAppointmentSystem.API.Repositories
 
         public Appointment GetAppointment(int id)
         {
-            return _dbContext.Appointments.Find(id);
+            return _dbContext.Appointments.Where(x => x.Id == id)
+                .Include(x => x.AppointmentTests)
+                    .ThenInclude(at => at.Test)
+                        .First();
         }
 
         public void SaveAppointment(Appointment Appointment)

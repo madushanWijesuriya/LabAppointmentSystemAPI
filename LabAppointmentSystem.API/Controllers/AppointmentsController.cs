@@ -4,6 +4,7 @@ using LabAppointmentSystem.API.Models;
 using LabAppointmentSystem.API.Payloads;
 using LabAppointmentSystem.API.Services.Classes;
 using LabAppointmentSystem.API.Services.Interfaces;
+using LabInvoiceSystem.API.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -16,17 +17,19 @@ namespace LabAppointmentSystem.API.Controllers
     public class AppointmentsController : BaseController
     {
         private readonly IAppointmentService _appointmentService;
+        private readonly IInvoiceService _invoiceService;
         private readonly IExceptionHandlingService _exceptionHandlingService;
         private readonly UserManager<User> _userManageService;
         private readonly IUserService _userService;
 
-        public AppointmentsController(IAppointmentService appointmentService, IUserService userService,IExceptionHandlingService exceptionHandlerExtensions,
+        public AppointmentsController(IInvoiceService invoiceService,IAppointmentService appointmentService, IUserService userService,IExceptionHandlingService exceptionHandlerExtensions,
             UserManager<User> userManageService)
         {
             _appointmentService = appointmentService;
             _exceptionHandlingService = exceptionHandlerExtensions;
             _userManageService = userManageService;
             _userService = userService;
+            _invoiceService = invoiceService;
         }
 
         [HttpGet("{role}")]
@@ -37,11 +40,11 @@ namespace LabAppointmentSystem.API.Controllers
 
             if (role == "Technician")
             {
-                appointments = appointments.Where(a => a.WorkFlow == AppointmentStatus.CheckIn && a.AppointmentTests.Count() > 0);
+                appointments = appointments.Where(a => a.WorkFlow == AppointmentStatus.TestAssigned && a.AppointmentTests.Count() > 0);
             }
             else if (role == "Reception")
             {
-                appointments = appointments.Where(a => a.WorkFlow != AppointmentStatus.CheckIn);
+                appointments = appointments.Where(a => a.WorkFlow != AppointmentStatus.TestAssigned);
             }
 
             var appointmentDtos = appointments.Select(appointment => new Appointment
@@ -120,6 +123,27 @@ namespace LabAppointmentSystem.API.Controllers
                         $"ICBT Appointment Lab";
                         emailService.SendEmail(userEmail, "ICBT Lab Payment Reminder", emailBody);
                     }
+                }
+                else if (updatedAppointment.WorkFlow == AppointmentStatus.TestAssigned)
+                {
+                    if(storageAppointment.AppointmentTests.Count > 0)
+                    {
+                        double amount = 0;
+
+                        foreach (var appointmentTest in storageAppointment.AppointmentTests)
+                        {
+                            amount = amount + appointmentTest.Test.Price;
+                        }
+                        var invoice = new Invoice
+                        {
+                            AppointmentId = id,
+                            PatientId = storageAppointment.PatientId.ToString(),
+                            Amount = amount
+                        };
+
+                        _invoiceService.CreateInvoice(invoice);
+                    }
+                    
                 }
 
                 return Ok(model);

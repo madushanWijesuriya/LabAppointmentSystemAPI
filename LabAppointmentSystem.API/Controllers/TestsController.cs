@@ -21,7 +21,7 @@ namespace LabTestSystem.API.Controllers
         }
 
         [HttpGet]
-        [Authorize(Roles = "Admin")]
+        [Authorize(Policy = "RequireStaff")]
         public ActionResult<IQueryable<Doctor>> GetAllTests()
         {
             try

@@ -3,12 +3,15 @@ using LabAppointmentSystem.API.Models;
 using LabAppointmentSystem.API.Repositories;
 using LabAppointmentSystem.API.Services.Classes;
 using LabAppointmentSystem.API.Services.Interfaces;
+using LabInvoiceSystem.API.Repositories;
+using LabInvoiceSystem.API.Services.Interfaces;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.OData;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -30,10 +33,14 @@ builder.Services.AddScoped<ITechnicianService, TechnicianService>();
 builder.Services.AddScoped<IAppointmentRepository, AppointmentRepository>();
 builder.Services.AddScoped<IAppointmentService, AppointmentService>();
 builder.Services.AddScoped<IAppointmentTestRepository, AppointmentTestRepository>();
+builder.Services.AddScoped<IAppointmentTestService, AppointmentTestService>();
 builder.Services.AddScoped<ITestRepository, TestRepository>();
 builder.Services.AddScoped<ITestService, TestService>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<IInvoiceRepository, InvoiceRepository>();
+builder.Services.AddScoped<IInvoiceService, InvoiceService>();
+builder.Services.AddScoped<IInvoiceService, InvoiceService>();
 
 builder.Services.AddIdentity<User, IdentityRole>()
     .AddEntityFrameworkStores<AppDbContext>()
@@ -56,6 +63,11 @@ builder.Services.AddAuthentication(options =>
         ValidAudience = "MadushanWijesuriya",
         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("AaBbCcDdEeFfGgHhIiJjKkLlMmNnOoPp"))
     };
+});
+
+builder.Services.AddControllers().AddJsonOptions(options =>
+{
+    options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
 });
 
 builder.Services.AddCors(options =>
