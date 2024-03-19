@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using System.Data;
 
 namespace LabAppointmentSystem.API.Controllers
 {
@@ -12,7 +13,7 @@ namespace LabAppointmentSystem.API.Controllers
     [EnableCors("AllowSpecificOrigin")]
     [Authorize]
 
-    public class AuthController : ControllerBase
+    public class AuthController : BaseController
     {
         private readonly UserManager<User> _userManager;
         private readonly SignInManager<User> _signInManager;
@@ -66,7 +67,11 @@ namespace LabAppointmentSystem.API.Controllers
             {
                 await _userManager.AddToRoleAsync(patient, "Patient");
 
-                var token = _jwtTokenService.GenerateJwtToken(patient);
+                var user = await _userManager.FindByEmailAsync(patient.Email);
+
+                var roles = await _userManager.GetRolesAsync(user);
+
+                var token = _jwtTokenService.GenerateJwtToken(patient, roles);
                 return Ok(new { Token = token });
             }
 
@@ -105,6 +110,13 @@ namespace LabAppointmentSystem.API.Controllers
             return BadRequest(new { Message = "Invalid or expired token" });
         }
 
+        //[HttpPost("Logout")]
+        //public async Task<IActionResult> Logout()
+        //{
+        //    var user = await _userManager.FindByIdAsync(UserId);
+        //    var token = _jwtTokenService.GenerateJwtToken(user);
+        //    return Ok(new { message = "Logout successful" });
+        //}
 
     }
 

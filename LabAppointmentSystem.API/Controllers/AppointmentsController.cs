@@ -47,6 +47,10 @@ namespace LabAppointmentSystem.API.Controllers
             {
                 appointments = appointments.Where(a => a.WorkFlow != AppointmentStatus.TestAssigned);
             }
+            else if (role == "Patient")
+            {
+                appointments = appointments.Where(a => a.PatientId == UserId);
+            }
 
             var appointmentDtos = appointments.Select(appointment => new Appointment
             {
@@ -71,8 +75,8 @@ namespace LabAppointmentSystem.API.Controllers
             {
                 var model = new Appointment
                 {
-                    Date = DateTime.Now.Date,
-                    Time = 12.30,
+                    Date = DateTime.SpecifyKind(appointment.Date,DateTimeKind.Unspecified),
+                    Time = appointment.Time,
                     PatientId = UserId,
                     WorkFlow = AppointmentStatus.Created,
                     Status = Status.Active,
