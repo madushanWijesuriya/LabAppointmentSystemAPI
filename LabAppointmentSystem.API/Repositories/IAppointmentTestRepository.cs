@@ -8,7 +8,7 @@ namespace LabAppointmentSystem.API.Repositories
 
         void SaveAppointmentTest(AppointmentTest appointmentTest);
 
-        void UpdateAppointmentTest(string techId, int id, AppointmentTestPayload appointmentTestPayload);
+        void UpdateAppointmentTest(string techId, int id, AppointmentTest appointmentTestPayload);
         Appointment GetAppointmentTest(int id);
     }
 }

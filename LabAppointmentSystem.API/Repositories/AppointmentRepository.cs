@@ -44,6 +44,8 @@ namespace LabAppointmentSystem.API.Repositories
             existingAppointment.Time = updatedAppointment.Time;
             existingAppointment.WorkFlow = updatedAppointment.WorkFlow;
             existingAppointment.Status = updatedAppointment.Status;
+            existingAppointment.UpdatedAt = updatedAppointment.UpdatedAt;
+            existingAppointment.ModifiedBy = updatedAppointment.ModifiedBy;
 
             _dbContext.SaveChanges();
         }

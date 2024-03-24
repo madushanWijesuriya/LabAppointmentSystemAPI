@@ -38,7 +38,7 @@ namespace LabAppointmentSystem.API.Repositories
             _dbContext.SaveChanges();
         }
 
-        public void UpdateAppointmentTest(string techId,int id, AppointmentTestPayload appointmentTestPayload)
+        public void UpdateAppointmentTest(string techId, int id, AppointmentTest appointmentTestPayload)
         {
             var existingAppointmentTest = _dbContext.AppointmentTests.Where(x => 
                 x.AppointmentId == appointmentTestPayload.AppointmentId 
@@ -50,7 +50,8 @@ namespace LabAppointmentSystem.API.Repositories
             {
                 throw new ArgumentException("Appointment not found");
             }
-
+            existingAppointmentTest.UpdatedAt = appointmentTestPayload.UpdatedAt;
+            existingAppointmentTest.ModifiedBy = appointmentTestPayload.ModifiedBy;
             existingAppointmentTest.Result = appointmentTestPayload.Result;
             existingAppointmentTest.TechnicianId = techId;
             _dbContext.SaveChanges();

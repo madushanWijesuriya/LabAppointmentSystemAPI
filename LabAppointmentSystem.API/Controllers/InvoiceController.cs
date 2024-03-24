@@ -11,7 +11,7 @@ namespace LabAppointmentSystem.API.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class InvoiceController : ControllerBase
+    public class InvoiceController : BaseController
     {
         private readonly IInvoiceService invoiceService;
         private readonly IAppointmentService _appointmentService;
@@ -48,11 +48,11 @@ namespace LabAppointmentSystem.API.Controllers
                     Id = invoice.Id,
                     Amount = invoice.Amount
                 };
-                invoiceService.UpdateInvoice(updatedInvoice);
+                invoiceService.UpdateInvoice(updatedInvoice, UserId);
 
                 var appointment = _appointmentService.GetAppointmentById(invoice.AppointmentId);
                 appointment.WorkFlow = AppointmentStatus.Paid;
-                _appointmentService.UpdateAppointment(appointment.Id, appointment);
+                _appointmentService.UpdateAppointment(appointment.Id, appointment, UserId);
                 return Ok();
             }
             catch (Exception ex)

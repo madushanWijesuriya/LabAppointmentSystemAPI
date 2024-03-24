@@ -82,7 +82,7 @@ namespace LabAppointmentSystem.API.Controllers
                     Status = Status.Active,
                 };
 
-                _appointmentService.CreateAppointment(model);
+                _appointmentService.CreateAppointment(model, UserId);
 
                 return Ok(model);
             }
@@ -107,7 +107,7 @@ namespace LabAppointmentSystem.API.Controllers
                     Status = updatedAppointment.Status
                 };
                 var storageAppointment = _appointmentService.GetAppointmentById(id);
-                _appointmentService.UpdateAppointment(id, model);
+                _appointmentService.UpdateAppointment(id, model, UserId);
 
                 if (updatedAppointment.WorkFlow == AppointmentStatus.TestAssigned)
                 {
@@ -127,10 +127,10 @@ namespace LabAppointmentSystem.API.Controllers
                             Amount = amount
                         };
 
-                        _invoiceService.CreateInvoice(invoice);
+                        _invoiceService.CreateInvoice(invoice, UserId);
                         var insertedInvoice = _invoiceService.GetInvoiceByAppointmentId(invoice.AppointmentId);
                         storageAppointment.InvoiceId = insertedInvoice.Id;
-                        _appointmentService.UpdateAppointment(id, storageAppointment);
+                        _appointmentService.UpdateAppointment(id, storageAppointment, UserId);
 
                     }
 
@@ -165,11 +165,12 @@ namespace LabAppointmentSystem.API.Controllers
 
 
         [HttpPost("Tests")]
+        [Authorize]
         public async Task<IActionResult> assignTests(TestAssignRequest testAssign)
         {
             try
             {
-                _appointmentService.AssignTests(testAssign.testIds, testAssign.appointmentId);
+                _appointmentService.AssignTests(testAssign.testIds, testAssign.appointmentId, UserId);
                 return Ok();
             }
             catch (Exception ex)

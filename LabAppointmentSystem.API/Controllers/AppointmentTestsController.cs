@@ -53,7 +53,7 @@ namespace LabAppointmentSystem.API.Controllers
             try
             {
                 var userId = UserId;
-                _appointmentService.UpdateAppointmentTest(userId, id, updatedAppointmentTest);
+                _appointmentService.UpdateAppointmentTest(userId, id, updatedAppointmentTest, UserId);
                 
                 return Ok();
             }

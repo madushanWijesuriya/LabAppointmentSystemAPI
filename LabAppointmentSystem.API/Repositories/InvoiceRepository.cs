@@ -35,6 +35,8 @@ namespace LabInvoiceSystem.API.Repositories
                 throw new ArgumentException("Invoice not found");
             }
             storageInvoice.IsPaid = true;
+            storageInvoice.UpdatedAt = updatedInvoice.UpdatedAt;
+            storageInvoice.ModifiedBy = updatedInvoice.ModifiedBy;
             _dbContext.SaveChanges();
         }
     }

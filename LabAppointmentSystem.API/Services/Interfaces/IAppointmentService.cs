@@ -6,9 +6,9 @@ namespace LabAppointmentSystem.API.Services.Interfaces
     public interface IAppointmentService
     {
         IQueryable<Appointment> RetrievAllAppointments();
-        void CreateAppointment(Appointment AppointmentDto);
+        void CreateAppointment(Appointment AppointmentDto, string modifiedBy);
         Appointment GetAppointmentById(int id);
-        void UpdateAppointment(int appointmentId, Appointment updatedAppointment);
-        void AssignTests(List<int> testIds, int appointmentId);
+        void UpdateAppointment(int appointmentId, Appointment updatedAppointment, string modifiedBy);
+        void AssignTests(List<int> testIds, int appointmentId, string modifiedBy);
     }
 }

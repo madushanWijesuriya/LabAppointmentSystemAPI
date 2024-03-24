@@ -1,4 +1,5 @@
 ﻿using LabAppointmentSystem.API.Enums;
+using LabAppointmentSystem.API.Models;
 
 namespace LabAppointmentSystem.API.Payloads
 {
